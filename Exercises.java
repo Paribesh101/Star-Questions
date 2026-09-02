@@ -1,4 +1,4 @@
-public class Practice {
+public class Exercises {
     public static void main(String[] args) {
         // Challenge- Printing Output
         int age = 23;
