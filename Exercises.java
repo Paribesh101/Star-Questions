@@ -46,10 +46,10 @@ public class Exercises {
         if(grade >= 90){
             System.out.println("Grade: A");
         } 
-        else if(grade >= 75 && grade <= 89){
+        else if(grade >= 75){
             System.out.println("Grade: B");
         }
-        else if(grade >= 60 && grade <= 74){
+        else if(grade >= 60){
             System.out.println("Grade: C");
         } else{
             System.out.println("Grade: D");
