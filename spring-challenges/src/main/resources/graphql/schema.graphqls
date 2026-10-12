@@ -1,0 +1,18 @@
+# The shape of a Student as GraphQL exposes it.
+# Note this is NOT the JPA entity - "school" is deliberately left out.
+type Student {
+    id: Int
+    firstName: String
+    lastName: String
+    email: String
+}
+
+# Read operations. The "!" means the argument is required.
+type Query {
+    studentById(id: Int!): Student
+}
+
+# Write operations.
+type Mutation {
+    createStudent(firstName: String!, lastName: String!, email: String!): Student
+}

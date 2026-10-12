@@ -13,6 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import com.spring.demo.exceptions.StudentErrorResponse;
+
+
 
 import com.spring.demo.domain.Student;
 import com.spring.demo.service.StudentService;
@@ -22,8 +33,10 @@ import jakarta.validation.Valid;
 
 
 
+@Tag(name = "Students", description = "Operations for retrieving and managing students")
 @RestController
 @RequestMapping("/api/students")
+
 public class StudentController {
 
     private final StudentService studentService;
@@ -67,8 +80,34 @@ public class StudentController {
 
    // query parameter - typically used for filtering/searching
    // GET http://localhost:8080/api/students?lastName=wilson&grade=b
+   @Operation(
+       summary = "Get a student by ID",
+       description = "Returns a single student matching the given ID. "
+                   + "Throws RecordNotFoundException if no student exists with that ID."
+   )
+   @ApiResponses({
+       @ApiResponse(
+           responseCode = "200",
+           description = "Student found",
+           content = @Content(
+               mediaType = "application/json",
+               schema = @Schema(implementation = Student.class)
+           )
+       ),
+       @ApiResponse(
+           responseCode = "404",
+           description = "No student exists with that ID",
+           content = @Content(
+               mediaType = "application/json",
+               schema = @Schema(implementation = StudentErrorResponse.class)
+           )
+       )
+   })
    @GetMapping("/{id}")
-   public Student getStudentById(@PathVariable int id) {
+   public Student getStudentById(
+       @Parameter(description = "ID of the student to retrieve", example = "1", required = true)
+       @PathVariable int id
+   ) {
         return studentService.getStudentById(id);
    }
 
